@@ -1,0 +1,26 @@
+{
+  "name": "budgetApp",
+  "version": "1.0.0",
+  "description": "",
+  "private":true,
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mweston6288/budgetApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mweston6288/budgetApp/issues"
+  },
+  "homepage": "https://github.com/mweston6288/budgetApp#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.9"
+  }
+}
