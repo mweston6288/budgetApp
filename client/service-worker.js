@@ -4,7 +4,7 @@ const FILES_TO_CACHE = [
     "/style.css",
     "/dist/app.bundle.js",
     "/dist/db.bundle.js",
-
+    "/dist/transaction.bundle.js"
 ];
 
 
@@ -34,16 +34,25 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("fetch", event => {
+    console.log(self);
+     console.log(event)
     if (event.request.url.startsWith(self.location.origin)) {
+        console.log(caches)
+
         event.respondWith(
             caches.match(event.request).then(cachedResponse => {
+                console.log(cachedResponse)
                 if (cachedResponse) {
                     return cachedResponse;
                 }
 
                 return caches.open(RUNTIME).then(cache => {
+                    console.log(cache);
                     return fetch(event.request).then(response => {
+                        console.log(response)
+
                         return cache.put(event.request, response.clone()).then(() => {
+                            
                             return response;
                         });
                     });

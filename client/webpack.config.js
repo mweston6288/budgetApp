@@ -5,6 +5,7 @@ const config = {
     entry: {
         app: "./assets/index.js",
         db: "./assets/db.js",
+        transaction: "./models/transaction.js"
     },
     output: {
         path: __dirname + "/dist",
