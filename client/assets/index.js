@@ -123,6 +123,8 @@ function sendTransaction(isAdding) {
         amountEl.value = "";
       }
     })
+  nameEl.value = "";
+  amountEl.value = "";
 }
 
 document.querySelector("#add-btn").addEventListener("click", function(event) {
