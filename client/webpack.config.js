@@ -4,7 +4,6 @@ const path = require("path");
 const config = {
     entry: {
         app: "./assets/index.js",
-        transaction: "./models/transaction.js",
         db: "./assets/db.js"
     },
     output: {

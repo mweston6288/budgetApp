@@ -1,9 +1,9 @@
 let db;
-const request = indexedDB.open("pending", 1);
+const request = indexedDB.open("budget", 1);
 
 request.onupgradeneeded = function(event) {
   db = event.target.result;
-  db.createObjectStore("pending", { autoIncrement: true });
+  db.createObjectStore("budget", { autoIncrement: true });
 };
 
 request.onsuccess = function(event) {
@@ -20,8 +20,8 @@ request.onerror = function(event) {
 function saveRecord(record) {
   return new Promise((resolve, reject) => {
 
-    const transaction = db.transaction(["pending"], "readwrite");
-    const store = transaction.objectStore("pending");
+    const transaction = db.transaction(["budget"], "readwrite");
+    const store = transaction.objectStore("budget");
 
     store.add(record);
   })
@@ -30,8 +30,8 @@ function saveRecord(record) {
 function checkDatabase() {
   return new Promise((resolve, reject)=>{
   console.log(db)
-  const transaction = db.transaction(["pending"], "readwrite");
-  const store = transaction.objectStore("pending");
+  const transaction = db.transaction(["budget"], "readwrite");
+  const store = transaction.objectStore("budget");
   
   const getAll = store.getAll();
 
