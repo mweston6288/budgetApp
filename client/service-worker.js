@@ -4,7 +4,7 @@ const FILES_TO_CACHE = [
     "/style.css",
     "/dist/app.bundle.js",
     "/dist/db.bundle.js",
-    "/dist/transaction.bundle.js"
+    "/dist/transaction.bundle.js",
 ];
 
 
@@ -22,6 +22,7 @@ self.addEventListener("install", event => {
 
 // The activate handler takes care of cleaning up old caches.
 self.addEventListener("activate", event => {
+    console.log("activated")
     const currentCaches = [PRECACHE, RUNTIME];
     event.waitUntil(
         caches.keys().then(cacheNames => {
@@ -34,10 +35,26 @@ self.addEventListener("activate", event => {
     );
 });
 
-self.addEventListener('fetch', function (event) {
-    event.respondWith(
-        caches.match(event.request).then(function (response) {
-            return response || fetch(event.request);
-        })
-    );
+
+self.addEventListener("fetch", event => {
+    console.log(event.request)
+    if (event.request.url.startsWith(self.location.origin)) {
+        console.log("here")
+        event.respondWith(
+            caches.match(event.request).then(cachedResponse => {
+                if (cachedResponse) {
+                    console.log(cachedResponse)
+                    return cachedResponse;
+                }
+
+                return caches.open(RUNTIME).then(cache => {
+                    return fetch(event.request).then(response => {
+                        return cache.put(event.request, response.clone()).then(() => {
+                            return response;
+                        });
+                    });
+                });
+            })
+        );
+    }
 });

@@ -1,16 +1,17 @@
 let transactions = [];
 let myChart;
 
-fetch("/api/transaction")
-  .then(response => response.json())
-  .then(data => {
-    // save db data on global variable
-    transactions = data;
-    populateTotal();
-    populateTable();
-    populateChart();
-  });
-
+function initiate(){
+  checkDatabase()
+    .then(response => {
+      console.log(response);
+      // save db data on global variable
+      transactions = response;
+      populateTotal();
+      populateTable();
+      populateChart();
+    });
+}
 function populateTotal() {
   // reduce transaction amounts to a single total value
   const total = transactions.reduce((total, t) => {
@@ -111,15 +112,7 @@ function sendTransaction(isAdding) {
   populateTotal();
 
   // also send to server
-  fetch("/api/transaction", {
-    method: "POST",
-    body: JSON.stringify(transaction),
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json"
-    }
-  })
-    .then(response => response.json())
+  saveRecord(transaction)
     .then(data => {
       if (data.errors) {
         errorEl.textContent = "Missing Information";
@@ -129,14 +122,6 @@ function sendTransaction(isAdding) {
         amountEl.value = "";
       }
     })
-    .catch(err => {
-      // fetch failed, so save in indexed db
-      saveRecord(transaction);
-
-      // clear form
-      nameEl.value = "";
-      amountEl.value = "";
-    });
 }
 
 document.querySelector("#add-btn").addEventListener("click", function(event) {
